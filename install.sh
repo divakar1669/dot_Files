@@ -13,11 +13,48 @@ alias glo='git log --oneline'
 alias gl='git log'
 alias gb='git branch'
 alias gst='git stash'
+alias gcp='git cherry-pick'
+alias gr='git reset'
+alias grh='git reset --hard'
+alias grs='git reset --soft'
+alias gclean='git clean -fd'
+alias gfetch='git fetch --all --prune'
+alias gbl='git blame'
+
+alias glg='git log --graph --oneline --decorate --all'
+alias glp='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+alias glf='git log --follow'
+alias gls='git log --stat'
+alias gln='git log --name-status'
+alias glc='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short --numstat'
+
+
 
 # Git Commit Function
 function gc() {
     git commit -m "$*"
 }
+
+
+
+# Merge current branch with a given branch (default: main)
+function gmerge() {
+    target_branch="${1:-main}"
+    current_branch=$(git branch --show-current)
+    if [ "$current_branch" == "$target_branch" ]; then
+        echo "You are already on '$target_branch' branch."
+        return 1
+    fi
+    echo "Switching to $target_branch branch..."
+    git switch "$target_branch" || { echo "Failed to switch to $target_branch branch."; return 1; }
+    echo "Pulling latest changes from $target_branch..."
+    git pull origin "$target_branch" || { echo "Failed to pull latest changes."; return 1; }
+    echo "Switching back to $current_branch..."
+    git switch "$current_branch" || { echo "Failed to switch back to $current_branch."; return 1; }
+    echo "Merging $target_branch into $current_branch..."
+    git merge "$target_branch"
+}
+
 
 # Git Switch Function
 function gsw() {
