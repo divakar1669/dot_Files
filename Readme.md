@@ -1,13 +1,12 @@
-# 🛠️ Divakar's Dotfiles Setup
+# 🛠️ Diva  Dotfiles Setup
 
-Welcome to `dot_Files` – a curated set of dotfiles containing custom aliases and functions to supercharge your Git and Yarn workflows. This setup helps streamline your development environment with powerful shortcuts and a consistent terminal experience.
+Welcome to `dot_Files` – a curated set of dotfiles containing custom aliases and functions to supercharge your Git workflows. This setup helps streamline your development environment with powerful shortcuts and a consistent terminal experience.
 
 ---
 
 ## 🚀 Features
 
-- 🔧 Custom Git command aliases (e.g., `gst`, `gcm`, `gco`)
-- 🧶 Yarn shortcut functions
+- 🔧 Custom Git command aliases (e.g., `gst`, `gcb`, `glo`)
 - 💡 Centralized configuration with easy setup
 
 ---
