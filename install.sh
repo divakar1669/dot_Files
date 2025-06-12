@@ -189,10 +189,6 @@ function ycom() {
     fi
 }
 
-## git pr genie
-bash -c "curl -sL https://raw.githubusercontent.com/divakar1669/git-pr-genie/main/git-pr-copilot.sh -o /workspaces/git-pr-copilot.sh && chmod +x /workspaces/git-pr-copilot.sh && /workspaces/git-pr-copilot.sh"
-
-
 
 EOF
 
