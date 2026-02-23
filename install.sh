@@ -189,6 +189,9 @@ function ycom() {
     fi
 }
 
+# claude short cuts
+alias claude-d='claude --dangerously-skip-permissions'
+alias ccu='npx ccusage@latest'
 
 EOF
 
