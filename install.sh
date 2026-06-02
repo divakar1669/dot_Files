@@ -1,7 +1,16 @@
 #!/bin/bash
 
+# Idempotency guard: skip if this script has already run.
+MARKER="# >>> diva-dotfiles-installed >>>"
+if grep -Fq "$MARKER" "$HOME/.bashrc" 2>/dev/null; then
+  echo "[setup] Already installed (marker found in ~/.bashrc). Skipping."
+  exit 0
+fi
+
 # Append Git aliases and functions to ~/.bashrc
 cat << 'EOF' >> ~/.bashrc
+
+# >>> diva-dotfiles-installed >>>
 
 
 # Git Aliases
@@ -206,16 +215,12 @@ cdsk() {
 
 EOF
 
-# --- Mirror ~/.bashrc into ~/.zshrc so zsh users get the same aliases/functions ---
-# (macOS defaults to zsh, which does not read ~/.bashrc.)
+# Ensure ~/.zshrc sources ~/.bashrc so zsh sessions pick up these aliases.
+# (macOS defaults to zsh, which does not read ~/.bashrc on its own.)
 touch "$HOME/.zshrc"
-while IFS= read -r line; do
-  [ -z "$line" ] && continue
-  grep -Fxq "$line" "$HOME/.zshrc" || printf '%s\n' "$line" >> "$HOME/.zshrc"
-done < "$HOME/.bashrc"
-
-# Apply changes to the current shell session
-source ~/.bashrc
+if ! grep -Fxq '[ -f ~/.bashrc ] && source ~/.bashrc' "$HOME/.zshrc"; then
+  printf '\n[ -f ~/.bashrc ] && source ~/.bashrc\n' >> "$HOME/.zshrc"
+fi
 
 echo "[setup] Done. Open a new shell, then run: cdsk"
-echo "Diva Custom Modifications applied to ~/.bashrc and mirrored to ~/.zshrc."
+echo "Diva Custom Modifications applied to ~/.bashrc (sourced from ~/.zshrc)."
