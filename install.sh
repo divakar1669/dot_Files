@@ -193,6 +193,41 @@ function ycom() {
 alias claude-d='claude --dangerously-skip-permissions'
 alias ccu='npx ccusage@latest'
 
+
+
+
+# amazon specific  cloud desktop 
+
+
+  # ============================================================
+  # Append this to the END of your one-time setup bash script.
+  # 1. Adds `cdsk` to .bash_profile (refresh creds + open VS Code)
+  # 2. Mirrors all of .bash_profile into .zshrc (no duplicates)
+  # ============================================================
+
+  # --- 1. Add cdsk to .bash_profile (only if not already there) ---
+  if ! grep -q "cdsk()" "$HOME/.bash_profile" 2>/dev/null; then
+  cat >> "$HOME/.bash_profile" <<'EOF'
+
+  # Amazon Cloud Desktop
+  export CLOUD_DESKTOP_HOST="dev-dsk-divath-1b-c1faff6d.eu-west-1.amazon.com"
+  cdsk() {
+    klist -s 2>/dev/null || kinit -f || return 1
+    mwinit -o || return 1
+    code --folder-uri "vscode-remote://ssh-remote+${1:-$CLOUD_DESKTOP_HOST}/home/divath"
+  }
+  EOF
+  fi
+
+  # --- 2. Mirror .bash_profile -> .zshrc, skipping lines already present ---
+  touch "$HOME/.zshrc"
+  while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    grep -Fxq "$line" "$HOME/.zshrc" || echo "$line" >> "$HOME/.zshrc"
+  done < "$HOME/.bash_profile"
+
+  echo "[setup] Done. Open a new shell, then run: cdsk"
+
 EOF
 
 # Apply changes to the current shell session
